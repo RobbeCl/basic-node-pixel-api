@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import FastifyCors from "fastify-cors";
 import { createReadStream, fstat, readFile, readFileSync } from "fs";
+import path from "path";
 
 const fastify = Fastify({
   logger: true,
@@ -13,6 +14,36 @@ fastify.register(FastifyCors, {
 fastify.server.addListener("request", (req) => {
   console.log("------------------New request!");
 });
+
+// Todo:
+
+// Links endpoint:
+// Create link
+// Delete link
+// update link
+// Statistics endpoint
+
+const tracking = {
+  name: "name of the link",
+  userId: "user who created the link",
+};
+
+const trackingPixel = {
+  trackingId: "trackingId",
+  url: "url",
+};
+
+const statistics = [
+  {
+    ip: "xxxx",
+    browser: "yyyy",
+    date: "zzz",
+  },
+];
+
+// User endpoint:
+// Create
+// Login
 
 fastify.get("/image/:imageName", (request, response) => {
   const imageName = request.params.imageName;
@@ -44,14 +75,20 @@ fastify.get("/image/:imageName", (request, response) => {
     Expires: 0,
   });
 
-  response.send(createReadStream("./pixel.png"));
+  response.send(createReadStream(path.join(process.cwd(), "src", "pixel.png")));
 });
 
 // Run the server!
-fastify.listen(3000, function (err, address) {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
+fastify.listen(
+  {
+    port: 3000,
+    host: "0.0.0.0",
+  },
+  function (err, address) {
+    if (err) {
+      fastify.log.error(err);
+      process.exit(1);
+    }
+    // Server is now listening on ${address}
   }
-  // Server is now listening on ${address}
-});
+);

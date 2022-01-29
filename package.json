@@ -12,6 +12,11 @@
     "nodemon": "^2.0.15"
   },
   "scripts": {
-    "dev": "nodemon ./index.js"
+    "dev": "nodemon ./src/index.js",
+    "serve": "node ./src/index.js"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=16.13.0"
   }
 }
